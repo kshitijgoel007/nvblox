@@ -39,7 +39,7 @@ ENDIF(PRE_CXX11_ABI_LINKABLE)
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
+set(CMAKE_BUILD_TYPE Release)
 
 # This link flag replaces "runpath" with "rpath" in executables and shared objects.
 # This is important because it means the search paths are passed down the shared object tree.
