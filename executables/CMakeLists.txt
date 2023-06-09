@@ -4,6 +4,7 @@ add_library(nvblox_datasets SHARED
     src/datasets/image_loader.cpp
     src/datasets/replica.cpp
     src/datasets/redwood.cpp
+    src/datasets/augiclnuim.cpp
     src/fuser.cpp
 )
 target_include_directories(nvblox_datasets PUBLIC 
@@ -41,3 +42,12 @@ target_link_libraries(fuse_redwood
     nvblox_lib nvblox_datasets
 )
 set_target_properties(fuse_redwood PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+
+# Aug ICL-NUIM executable
+add_executable(fuse_augiclnuim
+    src/fuse_augiclnuim.cpp
+)
+target_link_libraries(fuse_augiclnuim
+    nvblox_lib nvblox_datasets
+)
+set_target_properties(fuse_augiclnuim PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
