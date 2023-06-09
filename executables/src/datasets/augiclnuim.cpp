@@ -56,7 +56,14 @@ std::string getPathForDepthImage(const std::string& base_path,
                                  const std::string& dataset_name,
                                  const int frame_id) {
   std::stringstream ss;
-  ss << base_path << "/" << dataset_name << "-depth/" << std::setfill('0') << std::setw(5) << frame_id << ".png";
+  if (dataset_name == "livingroom1" || dataset_name == "livingroom2" || dataset_name == "office1" || dataset_name == "office2")
+  {
+    ss << base_path << "/" << dataset_name << "-depth/" << std::setfill('0') << std::setw(5) << frame_id << ".png";
+  }
+  else
+  {
+    ss << base_path << "/" << dataset_name << "-depth/" << std::setfill('0') << std::setw(6) << frame_id << ".png";
+  }
   return ss.str();
 }
 
@@ -64,7 +71,14 @@ std::string getPathForColorImage(const std::string& base_path,
                                  const std::string& dataset_name,
                                  const int frame_id) {
   std::stringstream ss;
-  ss << base_path << "/" << dataset_name << "-color/" << std::setfill('0') << std::setw(5) << frame_id << ".jpg";
+  if (dataset_name == "livingroom1" || dataset_name == "livingroom2" || dataset_name == "office1" || dataset_name == "office2")
+  {
+    ss << base_path << "/" << dataset_name << "-color/" << std::setfill('0') << std::setw(5) << frame_id << ".jpg";
+  }
+  else
+  {
+    ss << base_path << "/" << dataset_name << "-color/" << std::setfill('0') << std::setw(6) << frame_id << ".png";
+  }
   return ss.str();
 }
 
@@ -123,9 +137,11 @@ DataLoader::DataLoader(const std::string& base_path, const std::string& dataset_
           base_path, dataset_name))) {
   constexpr float fu = 525;
   constexpr float fv = 525;
+  constexpr float cu = 319.5;
+  constexpr float cv = 239.5;
   constexpr int width = 640;
   constexpr int height = 480;
-  camera_ = Camera(fu, fv, width, height);
+  camera_ = Camera(fu, fv, cu, cv, width, height);
 }
 
 /// Interface for a function that loads the next frames in a dataset
