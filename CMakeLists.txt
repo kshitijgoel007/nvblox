@@ -278,7 +278,7 @@ include(GNUInstallDirs)
 set_target_properties(stdgpu PROPERTIES INTERFACE_LINK_LIBRARIES "")
 
 install(
-    TARGETS nvblox_lib nvblox_gpu_hash nvblox_datasets stdgpu nvblox_eigen fuse_3dmatch fuse_replica
+    TARGETS nvblox_lib nvblox_gpu_hash nvblox_datasets stdgpu nvblox_eigen fuse_3dmatch fuse_replica fuse_redwood
     EXPORT nvbloxTargets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
