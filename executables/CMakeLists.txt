@@ -51,3 +51,11 @@ target_link_libraries(fuse_augiclnuim
     nvblox_lib nvblox_datasets
 )
 set_target_properties(fuse_augiclnuim PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+
+add_executable(reconstruct_augiclnuim
+    src/reconstruct_augiclnuim.cpp
+)
+target_link_libraries(reconstruct_augiclnuim
+    nvblox_lib nvblox_datasets
+)
+set_target_properties(reconstruct_augiclnuim PROPERTIES CUDA_SEPARABLE_COMPILATION ON)

@@ -577,4 +577,8 @@ bool Fuser::outputMapToFile() {
   return mapper_->saveMap(map_output_path_);
 }
 
+bool Fuser::inputFileToMap(const std::string& filename) {
+  return mapper_->loadMap(filename);
+}
+
 }  //  namespace nvblox

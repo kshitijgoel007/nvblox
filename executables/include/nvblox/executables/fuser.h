@@ -74,6 +74,8 @@ class Fuser {
   // Output the serialized map to a file
   bool outputMapToFile();
 
+  bool inputFileToMap(const std::string& filename);
+
   // Get the mapper (useful for experiments where we modify mapper settings)
   Mapper& mapper();
 

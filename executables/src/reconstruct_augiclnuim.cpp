@@ -39,8 +39,8 @@ int main(int argc, char* argv[]) {
   google::InstallFailureSignalHandler();
 
   // Path to the dataset
-  if (argc < 4) {
-    LOG(ERROR) << "Arguments missing. Failing.";
+  if (argc < 5) {
+    LOG(ERROR) << "No path to datasets directory and dataset name given, failing.";
     return 1;
   }
   std::string datasets_path = argv[1];
@@ -53,9 +53,17 @@ int main(int argc, char* argv[]) {
     LOG(FATAL) << "Creation of the Fuser failed";
   }
 
-  fuser->map_output_path_ = argv[3];
-  LOG(INFO) << "Map location:" << fuser->map_output_path_;
+  // Map location
+  std::string map_path;
+  map_path = argv[3];
+  LOG(INFO) << "Map location:" << map_path;
 
-  // Make sure the layers are the correct resolution.
-  return fuser->run();
+  // Mesh location
+  fuser->mesh_output_path_ = argv[4];
+  LOG(INFO) << "Mesh location:" << fuser->mesh_output_path_;
+
+  // load the map
+  fuser->inputFileToMap(map_path);
+
+  return fuser->outputMeshPly();
 }
