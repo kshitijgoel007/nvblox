@@ -204,6 +204,7 @@ class ImageView : public ImageBase<_ElementType> {
 /// Common Names
 using DepthImage = Image<float>;
 using ColorImage = Image<Color>;
+using IntensityImage = Image<Color>;
 using MonoImage = Image<uint8_t>;
 using DepthImageView = ImageView<float>;
 using ColorImageView = ImageView<Color>;

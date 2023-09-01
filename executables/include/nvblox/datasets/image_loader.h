@@ -36,6 +36,9 @@ bool load16BitDepthImage(
 bool load8BitColorImage(const std::string& filename,
                         ColorImage* color_image_ptr,
                         MemoryType memory_type = kDefaultImageMemoryType);
+bool load8BitIntensityImage(const std::string& filename,
+                        ColorImage* color_image_ptr,
+                        MemoryType memory_type = kDefaultImageMemoryType);
 
 using IndexToFilepathFunction = std::function<std::string(int image_idx)>;
 

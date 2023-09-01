@@ -67,7 +67,7 @@ std::string getPathForDepthImage(const std::string& base_path,
   return ss.str();
 }
 
-std::string getPathForColorImage(const std::string& base_path,
+std::string getPathForIntensityImage(const std::string& base_path,
                                  const std::string& dataset_name,
                                  const int frame_id) {
   std::stringstream ss;
@@ -91,11 +91,11 @@ std::unique_ptr<ImageLoader<DepthImage>> createDepthImageLoader(
       multithreaded, depth_scaling_factor);
 }
 
-std::unique_ptr<ImageLoader<ColorImage>> createColorImageLoader(
+std::unique_ptr<ImageLoader<IntensityImage>> createIntensityImageLoader(
     const std::string& base_path, const std::string& dataset_name,
     const bool multithreaded) {
-  return createImageLoader<ColorImage>(
-      std::bind(getPathForColorImage, base_path, dataset_name,
+  return createImageLoader<IntensityImage>(
+      std::bind(getPathForIntensityImage, base_path, dataset_name,
                 std::placeholders::_1),
       multithreaded);
 }
@@ -104,7 +104,7 @@ std::unique_ptr<ImageLoader<ColorImage>> createColorImageLoader(
 
 std::unique_ptr<Fuser> createFuser(const std::string base_path,
                                    const std::string dataset_name) {
-  auto data_loader = DataLoader::create(base_path, dataset_name);
+  auto data_loader = DataLoader::create(base_path, dataset_name, false);
   if (!data_loader) {
     return std::unique_ptr<Fuser>();
   }
@@ -128,7 +128,7 @@ DataLoader::DataLoader(const std::string& base_path, const std::string& dataset_
           internal::createDepthImageLoader(
               base_path, dataset_name,
               datasets::kDefaultUintDepthScaleFactor, multithreaded),
-          internal::createColorImageLoader(
+          internal::createIntensityImageLoader(
               base_path, dataset_name,
               multithreaded)),
       base_path_(base_path),

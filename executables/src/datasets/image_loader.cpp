@@ -84,6 +84,47 @@ bool load8BitColorImage(const std::string& filename,
   return true;
 }
 
+bool load8BitIntensityImage(const std::string& filename,
+                        IntensityImage* color_image_ptr, MemoryType memory_type) {
+  CHECK_NOTNULL(color_image_ptr);
+  timing::Timer stbi_timer("file_loading/intensity_image/stbi");
+  int width, height, num_channels;
+  uint8_t* image_data =
+      stbi_load(filename.c_str(), &width, &height, &num_channels, 4);
+  stbi_timer.Stop();
+
+  if (image_data == nullptr) {
+    return false;
+  }
+  // Currently we only support loading 3 channel (rgb) or 4 channel (rgba)
+  // images.
+  CHECK(num_channels == 3 || num_channels == 4);
+
+  CHECK_EQ(sizeof(Color), 4 * sizeof(uint8_t))
+      << "Color struct was padded by the compiler so image loading wont work.";
+
+  // Convert to grayscale and populate each channel with the resultant value
+  // https://stackoverflow.com/questions/687261/converting-rgb-to-grayscale-intensity
+  if (num_channels == 3) {
+    for (int i = 0; i < width * height; i++) {
+      uint8_t temp = (image_data[i * 4] * 0.2990) + (image_data[i * 4 + 1] * 0.5870) + (image_data[i * 4 + 2] * 0.1140);
+      image_data[i * 4] = temp;
+      image_data[i * 4 + 1] = temp;
+      image_data[i * 4 + 2] = temp;
+    }
+  }
+  else
+  {
+    return false;
+  }
+
+  *color_image_ptr = IntensityImage::fromBuffer(
+      height, width, reinterpret_cast<Color*>(image_data), memory_type);
+
+  stbi_image_free(image_data);
+  return true;
+}
+
 template <>
 bool ImageLoader<DepthImage>::getImage(int image_idx, DepthImage* image_ptr) {
   CHECK_NOTNULL(image_ptr);
@@ -92,10 +133,18 @@ bool ImageLoader<DepthImage>::getImage(int image_idx, DepthImage* image_ptr) {
   return res;
 }
 
+// template <>
+// bool ImageLoader<ColorImage>::getImage(int image_idx, ColorImage* image_ptr) {
+//   CHECK_NOTNULL(image_ptr);
+//   bool res = load8BitColorImage(index_to_filepath_(image_idx), image_ptr,
+//                                 memory_type_);
+//   return res;
+// }
+
 template <>
-bool ImageLoader<ColorImage>::getImage(int image_idx, ColorImage* image_ptr) {
+bool ImageLoader<IntensityImage>::getImage(int image_idx, IntensityImage* image_ptr) {
   CHECK_NOTNULL(image_ptr);
-  bool res = load8BitColorImage(index_to_filepath_(image_idx), image_ptr,
+  bool res = load8BitIntensityImage(index_to_filepath_(image_idx), image_ptr,
                                 memory_type_);
   return res;
 }
